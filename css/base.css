@@ -82,4 +82,144 @@ body {
   box-shadow: var(--sombra-sm);
   max-width: 700px;
 }
-.grafico-titulo { font-size: 15px; font-weight: 700; color: var(--cinza-900); margin-bottom: 20px; letter-spacing: -.2px; }
+.grafico-titulo { font-size: 15px; font-weight: 700; color: var(--cinza-900); margin-bottom: 20px; letter-spacing: -.2px; }/* base.css - Edição Revitalizada e Moderna */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Cores de Alerta e Status Atualizadas (Cores mais vivas) */
+  --verde:          #10b981;
+  --verde-bg:       #f0fdf4;
+  --verde-borda:    #bbf7d0;
+  
+  --amarelo:        #f59e0b;
+  --amarelo-bg:     #fffbeb;
+  --amarelo-borda:  #fef3c7;
+  
+  --vermelho:       #f43f5e;
+  --vermelho-bg:    #fff1f2;
+  --vermelho-borda: #fecdd3;
+  
+  --azul:           #3b82f6;
+  --azul-bg:        #eff6ff;
+
+  /* Cores de Painel e Superfície */
+  --branco:    #ffffff;
+  
+  /* O SEGREDO: Mudar o cinza-50 para uma cor com pigmento sutil. 
+     Isso faz os cards brancos saltarem da tela instantaneamente! */
+  --cinza-50:  #f3f4f6; 
+  --cinza-100: #e5e7eb;
+  --cinza-200: #d1d5db;
+  --cinza-300: #9ca3af;
+  --cinza-400: #6b7280;
+  --cinza-500: #4b5563;
+  --cinza-700: #374151;
+  --cinza-900: #111827; /* Tom ardósia escuro para substituir o preto puro */
+
+  /* Tipografia */
+  --fonte:     'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  
+  /* Bordas mais suaves e modernas */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px; /* Cantos arredondados mais generosos estilo mobile moderno */
+
+  /* Nova Tecnologia de Sombras em Camadas (Efeito de vidro e flutuação) */
+  --sombra-sm: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03);
+  --sombra-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --sombra-lg: 0 20px 25px -5px rgba(17, 24, 39, 0.08), 0 10px 10px -5px rgba(17, 24, 39, 0.04);
+}
+
+body {
+  font-family: var(--fonte);
+  background: var(--cinza-50);
+  color: var(--cinza-700);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+  max-width: 1200px; /* Um pouco mais largo para respirar melhor */
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.tab-panel        { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Animação suave ao trocar de aba */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cabeçalho de página mais imponente */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.page-titulo { 
+  font-size: 28px; 
+  font-weight: 800; 
+  color: var(--cinza-900); 
+  letter-spacing: -0.6px; 
+}
+.page-subtitulo { 
+  font-size: 14px; 
+  color: var(--cinza-400); 
+  margin-top: 6px; 
+  font-weight: 500; 
+}
+
+/* Badges revitalizadas com bordas suaves e mais contraste */
+.badge { 
+  display: inline-block; 
+  font-size: 12px; 
+  font-weight: 600; 
+  padding: 6px 14px; 
+  border-radius: 99px; 
+  letter-spacing: .01em; 
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.badge-recebido  { background: var(--azul-bg);      color: var(--azul);      border: 1px solid #dbeafe; }
+.badge-analise   { background: var(--amarelo-bg);   color: var(--amarelo);   border: 1px solid var(--amarelo-borda); }
+.badge-andamento { background: var(--amarelo-bg);   color: var(--amarelo);   border: 1px solid var(--amarelo-borda); }
+.badge-resolvido { background: var(--verde-bg);     color: var(--verde);     border: 1px solid var(--verde-borda); }
+.badge-critico   { background: var(--vermelho-bg);  color: var(--vermelho);  border: 1px solid var(--vermelho-borda); }
+
+.verde-txt    { color: var(--verde); font-weight: 700; }
+.amarelo-txt  { color: var(--amarelo); font-weight: 700; }
+.vermelho-txt { color: var(--vermelho); font-weight: 700; }
+
+/* ── Gráfico Repaginado ── */
+.grafico-card {
+  background: var(--branco);
+  border: 1px solid rgba(0, 0, 0, 0.03); /* Esqueça a borda cinza pesada */
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--sombra-lg); /* Gráfico agora salta da tela como um card flutuante */
+  max-width: 100%; /* Ocupa melhor o espaço disponível */
+  transition: box-shadow 0.3s ease;
+}
+.grafico-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(17, 24, 39, 0.12);
+}
+.grafico-titulo { 
+  font-size: 18px; 
+  font-weight: 800; 
+  color: var(--cinza-900); 
+  margin-bottom: 24px; 
+  letter-spacing: -.3px; 
+}
+
+/* Transições suaves para qualquer botão do sistema */
+button, select, input {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
