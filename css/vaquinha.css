@@ -1,0 +1,58 @@
+/* vaquinha.css */
+.vaquinhas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .vaquinhas-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .vaquinhas-grid { grid-template-columns: 1fr; } }
+
+.vaq-card {
+  background: var(--branco);
+  border: 1px solid var(--cinza-200);
+  border-radius: var(--radius-xl);
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+  box-shadow: var(--sombra-sm);
+  transition: all .15s;
+}
+.vaq-card:hover { box-shadow: var(--sombra-lg); transform: translateY(-2px); }
+
+.vaq-card-header  { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.vaq-card-titulo  { font-size: 14px; font-weight: 700; color: var(--cinza-900); flex: 1; line-height: 1.4; letter-spacing: -.2px; }
+.vaq-bairro       { font-size: 12px; color: var(--cinza-400); font-weight: 500; }
+
+.vaq-valores { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; color: var(--cinza-400); font-weight: 500; }
+.vaq-valores strong { color: var(--cinza-900); font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
+
+.vaq-pct { font-size: 11px; color: var(--verde); font-weight: 700; }
+
+.vaq-bar-bg   { height: 8px; background: var(--cinza-100); border-radius: 6px; overflow: hidden; }
+.vaq-bar-fill {
+  height: 100%; border-radius: 6px;
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+  transition: width .7s ease;
+}
+
+.vaq-rodape       { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
+.vaq-apoiadores   { font-size: 12px; color: var(--cinza-400); font-weight: 500; }
+
+.btn-contribuir {
+  background: var(--verde-bg);
+  border: none; border-radius: var(--radius-md);
+  padding: 7px 16px;
+  font-size: 12px; font-weight: 600;
+  color: var(--verde); cursor: pointer;
+  transition: all .15s; font-family: var(--fonte);
+}
+.btn-contribuir:hover { background: var(--verde); color: var(--branco); }
+
+.btn-nova-vaquinha {
+  background: var(--cinza-900); color: var(--branco);
+  border: none; padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+  font-family: var(--fonte); box-shadow: var(--sombra-sm);
+}
+.btn-nova-vaquinha:hover { opacity: .85; transform: translateY(-1px); }

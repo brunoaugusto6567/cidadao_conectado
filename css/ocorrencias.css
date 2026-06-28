@@ -1,0 +1,46 @@
+/* ocorrencias.css */
+.filtros       { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.filtro-select {
+  padding: 8px 12px;
+  border: 1.5px solid var(--cinza-200);
+  border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 500;
+  background: var(--branco);
+  color: var(--cinza-700);
+  cursor: pointer;
+  font-family: var(--fonte);
+  transition: border-color .15s;
+}
+.filtro-select:focus { outline: none; border-color: var(--azul); }
+
+.lista-ocorrencias { display: flex; flex-direction: column; gap: 10px; }
+
+.oc-card {
+  background: var(--branco);
+  border: 1px solid var(--cinza-200);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px 14px;
+  transition: all .15s;
+  box-shadow: var(--sombra-sm);
+  border-left: 4px solid var(--cinza-200);
+}
+.oc-card:hover { box-shadow: var(--sombra-md); transform: translateY(-1px); }
+.oc-card.urgencia-vermelho { border-left-color: var(--vermelho); }
+.oc-card.urgencia-amarelo  { border-left-color: var(--amarelo);  }
+.oc-card.urgencia-verde    { border-left-color: var(--verde);    }
+
+.oc-card-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 6px;
+}
+.oc-card-tipo { font-size: 15px; font-weight: 700; color: var(--cinza-900); letter-spacing: -.2px; }
+.oc-card-desc { font-size: 13px; color: var(--cinza-500); margin-bottom: 10px; line-height: 1.6; }
+.oc-card-meta {
+  display: flex; gap: 14px;
+  font-size: 12px; color: var(--cinza-400);
+  font-weight: 500; flex-wrap: wrap;
+}
+
+.oc-prog-bar  { height: 5px; background: var(--cinza-100); border-radius: 4px; margin-top: 12px; overflow: hidden; }
+.oc-prog-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }

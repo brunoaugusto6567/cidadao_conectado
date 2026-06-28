@@ -1,0 +1,35 @@
+/* ranking.css */
+.ranking-lista { display: flex; flex-direction: column; gap: 8px; }
+
+.rank-item {
+  background: var(--branco);
+  border: 1px solid var(--cinza-200);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 14px;
+  transition: all .15s;
+  box-shadow: var(--sombra-sm);
+}
+.rank-item:hover { box-shadow: var(--sombra-md); transform: translateX(3px); }
+
+/* Medalhas top 3 */
+.rank-item:nth-child(1) { border-left: 4px solid #f59e0b; }
+.rank-item:nth-child(2) { border-left: 4px solid #94a3b8; }
+.rank-item:nth-child(3) { border-left: 4px solid #b45309; }
+
+.rank-pos { font-size: 13px; font-weight: 700; color: var(--cinza-300); min-width: 28px; }
+.rank-item:nth-child(1) .rank-pos { color: #f59e0b; }
+.rank-item:nth-child(2) .rank-pos { color: #94a3b8; }
+.rank-item:nth-child(3) .rank-pos { color: #b45309; }
+
+.rank-nome  { font-size: 14px; font-weight: 600; color: var(--cinza-900); min-width: 130px; letter-spacing: -.1px; }
+
+.rank-bar-bg   { flex: 1; height: 8px; background: var(--cinza-100); border-radius: 6px; overflow: hidden; }
+.rank-bar-fill { height: 100%; border-radius: 6px; transition: width .7s cubic-bezier(.4,0,.2,1); }
+
+.rank-score {
+  font-size: 14px; font-weight: 800;
+  color: var(--cinza-700);
+  min-width: 54px; text-align: right;
+  letter-spacing: -.3px;
+}

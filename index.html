@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CidadeAtiva — Fortaleza</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/mapa.css" />
+  <link rel="stylesheet" href="css/ocorrencias.css" />
+  <link rel="stylesheet" href="css/ranking.css" />
+  <link rel="stylesheet" href="css/vaquinha.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header class="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <span class="logo-icon">🏙️</span>
+      <span class="logo-nome">CidadeAtiva</span>
+      <span class="logo-cidade">Fortaleza</span>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" data-tab="mapa">Mapa</button>
+      <button class="nav-btn" data-tab="ocorrencias">Ocorrências</button>
+      <button class="nav-btn" data-tab="ranking">Ranking</button>
+      <button class="nav-btn" data-tab="vaquinha">Vaquinha</button>
+      <button class="nav-btn" data-tab="grafico">Gráfico</button>
+    </nav>
+    <button class="btn-reportar" id="btnAbrirModal">+ Reportar problema</button>
+  </div>
+</header>
+
+<!-- ===== CONTEÚDO ===== -->
+<main class="main">
+
+  <!-- ABA: MAPA -->
+  <section class="tab-panel active" id="tab-mapa">
+    <div class="mapa-layout">
+      <div class="mapa-container">
+        <div class="filtros-mapa">
+          <button class="filtro-mapa-btn ativo" data-filtro="todos">Todos</button>
+          <button class="filtro-mapa-btn" data-filtro="vermelho">🔴 Críticos</button>
+          <button class="filtro-mapa-btn" data-filtro="amarelo">🟡 Atenção</button>
+          <button class="filtro-mapa-btn" data-filtro="verde">🟢 Ótimos</button>
+        </div>
+        <div id="mapa"></div>
+        <div class="mapa-legenda">
+          <span class="leg-item verde">● Ótimo</span>
+          <span class="leg-item amarelo">● Atenção</span>
+          <span class="leg-item vermelho">● Crítico</span>
+        </div>
+      </div>
+      <aside class="mapa-sidebar">
+        <div class="sidebar-topo">
+          <span class="sidebar-titulo">Resumo</span>
+          <span class="sidebar-sub">Fortaleza · agora</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-num" id="statTotal">—</div>
+            <div class="stat-label">Ocorrências abertas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num verde-txt" id="statResolvidas">—</div>
+            <div class="stat-label">Resolvidas este mês</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num vermelho-txt" id="statCriticas">—</div>
+            <div class="stat-label">Críticas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num amarelo-txt" id="statAtencao">—</div>
+            <div class="stat-label">Bairros em atenção</div>
+          </div>
+        </div>
+        <div class="sidebar-secao">
+          <h3 class="secao-titulo">Ocorrências recentes</h3>
+          <div class="ocorrencias-mini" id="ocorrenciasMini"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ABA: OCORRÊNCIAS -->
+  <section class="tab-panel" id="tab-ocorrencias">
+    <div class="page-header">
+      <h2 class="page-titulo">Ocorrências</h2>
+      <div class="filtros">
+        <select class="filtro-select" id="filtroStatus">
+          <option value="">Todos os status</option>
+          <option value="recebido">Recebido</option>
+          <option value="analise">Em análise</option>
+          <option value="andamento">Em andamento</option>
+          <option value="resolvido">Resolvido</option>
+        </select>
+        <select class="filtro-select" id="filtroTipo">
+          <option value="">Todos os tipos</option>
+          <option value="buraco">Buraco na via</option>
+          <option value="iluminacao">Iluminação</option>
+          <option value="lixo">Lixo</option>
+          <option value="esgoto">Esgoto</option>
+          <option value="agua">Vazamento de água</option>
+        </select>
+      </div>
+    </div>
+    <div class="lista-ocorrencias" id="listaOcorrencias"></div>
+  </section>
+
+  <!-- ABA: RANKING -->
+  <section class="tab-panel" id="tab-ranking">
+    <div class="page-header">
+      <h2 class="page-titulo">Ranking dos bairros</h2>
+      <p class="page-subtitulo">Baseado em ocorrências abertas, resolvidas e índice de conservação</p>
+    </div>
+    <div class="ranking-lista" id="rankingLista"></div>
+  </section>
+
+  <!-- ABA: VAQUINHA -->
+  <section class="tab-panel" id="tab-vaquinha">
+    <div class="page-header">
+      <div>
+        <h2 class="page-titulo">Vaquinhas comunitárias</h2>
+        <p class="page-subtitulo">Moradores se unem para resolver o que a prefeitura não prioriza</p>
+      </div>
+      <button class="btn-nova-vaquinha" id="btnNovaVaquinha">+ Nova vaquinha</button>
+    </div>
+    <div class="vaquinhas-grid" id="vaquinhasGrid"></div>
+  </section>
+
+</main>
+
+<!-- ===== MODAL: REPORTAR ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-titulo">Reportar problema</h2>
+      <button class="modal-fechar" id="btnFecharModal">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="campo">
+        <label class="campo-label">Foto do problema</label>
+        <div class="upload-area">
+          <input type="file" id="inputFoto" accept="image/*" />
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <span class="upload-icon">📷</span>
+            <span>Clique para enviar uma foto</span>
+          </div>
+          <img id="previewFoto" class="foto-preview" style="display:none" alt="preview" />
+        </div>
+      </div>
+
+      <div class="ia-resultado" id="iaResultado" style="display:none">
+        <div class="ia-badge">✨ Análise da IA</div>
+        <div class="ia-tipo" id="iaTipo"></div>
+        <div class="ia-descricao" id="iaDescricao"></div>
+        <div class="ia-setor" id="iaSetor"></div>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Tipo de problema</label>
+        <select class="campo-input" id="campTipo">
+          <option value="">Selecione...</option>
+          <option value="buraco">Buraco na via</option>
+          <option value="iluminacao">Falta de iluminação</option>
+          <option value="lixo">Acúmulo de lixo</option>
+          <option value="esgoto">Esgoto / alagamento</option>
+          <option value="agua">Vazamento de água</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Descrição</label>
+        <textarea class="campo-input campo-textarea" id="campDescricao"
+          placeholder="Descreva o problema com detalhes..."></textarea>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Bairro</label>
+        <select class="campo-input" id="campBairro">
+          <option value="">Selecione o bairro...</option>
+          <option>Aldeota</option><option>Meireles</option><option>Cocó</option>
+          <option>Fátima</option><option>Montese</option><option>Parangaba</option>
+          <option>Conjunto Ceará</option><option>Bom Jardim</option>
+          <option>Pirambu</option><option>Água Fria</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Endereço (opcional)</label>
+        <input type="text" class="campo-input" id="campEndereco"
+          placeholder="Ex: Av. Beira Mar, próx. ao nº 500" />
+      </div>
+
+      <button class="btn-enviar" id="btnEnviarOcorrencia">Enviar ocorrência</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/dados.js"></script>
+<script src="js/mapa.js"></script>
+<script src="js/ocorrencias.js"></script>
+<script src="js/ranking.js"></script>
+<script src="js/vaquinha.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/melhorias.js"></script>
+<script src="js/app.js"></script>
+
+
+<!-- MODAL: NOVA VAQUINHA -->
+<div class="modal-overlay" id="modalVaquinhaOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-titulo">Nova vaquinha</h2>
+      <button class="modal-fechar" id="btnFecharModalVaquinha">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="campo">
+        <label class="campo-label">Título da campanha</label>
+        <input type="text" class="campo-input" id="vaqTitulo"
+          placeholder="Ex: Reforma da praça do bairro" />
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Descrição</label>
+        <textarea class="campo-input campo-textarea" id="vaqDescricao"
+          placeholder="Explique o problema e por que a comunidade precisa se unir..."></textarea>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Bairro</label>
+        <select class="campo-input" id="vaqBairro">
+          <option value="">Selecione o bairro...</option>
+          <option>Aldeota</option><option>Meireles</option><option>Cocó</option>
+          <option>Fátima</option><option>Montese</option><option>Parangaba</option>
+          <option>Conjunto Ceará</option><option>Bom Jardim</option>
+          <option>Pirambu</option><option>Água Fria</option>
+          <option>Dionísio Torres</option><option>Benfica</option>
+          <option>José Bonifácio</option><option>Antônio Bezerra</option>
+          <option>Lagamar</option><option>Granja Lisboa</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Meta de arrecadação (R$)</label>
+        <input type="number" class="campo-input" id="vaqMeta"
+          placeholder="Ex: 5000" min="100" />
+      </div>
+
+      <div class="campo">
+        <label class="campo-label">Prazo (dias)</label>
+        <input type="number" class="campo-input" id="vaqDias"
+          placeholder="Ex: 30" min="7" max="90" />
+      </div>
+
+      <button class="btn-enviar" id="btnCriarVaquinha">Criar vaquinha</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL: DETALHES DA OCORRÊNCIA -->
+<div class="modal-overlay" id="modalDetalhesOverlay">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 class="modal-titulo" id="detTitulo"></h2>
+      <button class="modal-fechar" id="btnFecharDetalhes">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="detStatus" style="margin-bottom:4px"></div>
+      <p class="det-descricao" id="detDescricao"></p>
+      <div class="det-meta" id="detMeta"></div>
+      <div class="det-setor" id="detSetor"></div>
+
+      <div class="det-secao">
+        <div class="secao-titulo" style="margin-bottom:12px">Andamento</div>
+        <div class="timeline" id="detTimeline"></div>
+      </div>
+
+      <div class="det-acoes">
+        <button class="btn-confirmar" id="btnConfirmar">👍 Confirmar que existe</button>
+        <button class="btn-whatsapp" id="btnCompartilhar">📲 Compartilhar no WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
